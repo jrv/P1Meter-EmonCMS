@@ -10,6 +10,7 @@
 #include <Arduino.h>
 #define MAXP1LINELENGTH 64 // longest normal line is 47 char (+3 for \r\n\0)
 #include <SoftwareSerial.h>
+
 #ifndef SERIALDEBUG
 #define SERIALDEBUG false
 #endif
@@ -33,6 +34,7 @@ class MeterP1 {
     long mNP2 = 0; // Instantaneousactive power L2 (-P)
     long mNP3 = 0; // Instantaneousactive power L3 (-P)
     int mTIM = 0; // Timestamp
+    unsigned int currentCRC=0;
     
     SoftwareSerial p1Serial;
     void enable();
@@ -44,6 +46,7 @@ class MeterP1 {
     int FindCharInArrayRev(char array[], char c, int len);
     long getValue(char* buffer, int maxlen);
     int getTimeValue(char* buffer, int maxlen);
+    unsigned int CRC16(unsigned int crc, unsigned char *buf, int len);
     
   public:
     char sendline[300];

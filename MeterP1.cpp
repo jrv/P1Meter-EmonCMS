@@ -19,19 +19,11 @@ void MeterP1::readTelegram() {
 }
 
 void MeterP1::printTelegram(const char node[], const char apikey[]) {
-  // size = 7 rijen van 12 characters + CR
-  //client.print("GET /input/post?node=P1&apikey=6ebc858fe3394ec7096d199d60d3f40f&json={");
-  //client.print(p1.sendline);
-  //client.println("} HTTP/1.1");
   sprintf(sendline, "GET /input/post?node=%s&apikey=%s&json={T181:%d,T182:%d,T281:%d,T282:%d,P1:%d,P2:%d,IP1:%d,IP2:%d,IP3:%d,NP1:%d,NP2:%d,NP3:%d,GAS:%d} HTTP/1.1",
           node, apikey, mEVLT, mEVHT, mEOLT, mEOHT, mEAV, mEAT, mIP1, mIP2, mIP3, mNP1, mNP2, mNP3, mGAS);
 }
 
 void MeterP1::printShortTelegram(const char node[], const char apikey[]) {
-  // size = 7 rijen van 12 characters + CR
-  //client.print("GET /input/post?node=P1&apikey=6ebc858fe3394ec7096d199d60d3f40f&json={");
-  //client.print(p1.sendline);
-  //client.println("} HTTP/1.1");
   sprintf(sendline, "GET /input/post?node=%s&apikey=%s&json={P1:%d,P2:%d,IP1:%d,IP2:%d,IP3:%d,NP1:%d,NP2:%d,NP3:%d} HTTP/1.1",
           node, apikey, mEAV, mEAT, mIP1, mIP2, mIP3, mNP1, mNP2, mNP3);
 }
@@ -68,11 +60,22 @@ void MeterP1::tflush() {
 void MeterP1::readSingleTelegram() {
   // read one full telegram and store values
   telegram[0] = 0;
+  currentCRC=0x0000;
   while (telegram[0] != '!') {
     int len = p1Serial.readBytesUntil('\n', telegram, MAXP1LINELENGTH);
     telegram[len] = 0;
     processTelegramLine(len);
+    if (telegram[0] == '!') {
+      len = 1;
+      
+    }
+    currentCRC = CRC16(currentCRC, (unsigned char*)telegram, len);
     yield();
+  }
+  char messageCRC[4];
+  strncpy(messageCRC, telegram + 1, 4);
+  if (! (strtol(messageCRC, NULL, 16) == currentCRC)) {
+    //mEAV = 0; mEAT = 0;
   }
 }
 
@@ -181,4 +184,23 @@ int MeterP1::getTimeValue(char* buffer, int maxlen) {
   char res[5];
   strncpy(res, buffer + 18, 4);
   return (atof(res));
+}
+
+unsigned int MeterP1::CRC16(unsigned int crc, unsigned char *buf, int len)
+{
+  for (int pos = 0; pos < len; pos++)
+  {
+    crc ^= (unsigned int)buf[pos];    // XOR byte into least sig. byte of crc
+
+    for (int i = 8; i != 0; i--) {    // Loop over each bit
+      if ((crc & 0x0001) != 0) {      // If the LSB is set
+        crc >>= 1;                    // Shift right and XOR 0xA001
+        crc ^= 0xA001;
+      }
+      else                            // Else LSB is not set
+        crc >>= 1;                    // Just shift right
+    }
+  }
+
+  return crc;
 }
