@@ -15,7 +15,7 @@ De P1 aansluiting heeft een RJ-12 port. Daarvan zijn 3 pinnen in gebruik, zie he
 * D1 wordt aangesloten op de Data pin. Ook wordt een weerstand gelegd tussen +3V3 en D1, zodat D1 hoog is als de Data pin geen GND is. D1 is geinverteerd en wordt via SoftSerial uitgelezen.
 * Een 5V voeding wordt aangesloten op +5V en GND. Deze heeft een aparte modulaire behuizing die in de stoppenkast past. De Wemos D1 zit met een RJ-12 plug in een aparte module.
 
-[Schets van de aangesloten electronica](/master/T1Schema.jpg)
+[Schets van de aangesloten electronica](master/T1Schema.jpg)
 
 ## Links
 * EmonCMS: https://openenergymonitor.org/
