@@ -1,0 +1,12 @@
+// change these values for your personal use
+// and rename this file to config.h
+const char ssid[] = "yournetwork"; // your ESSID
+const char password[] = "wifipass"; // your wifi password
+const char hostName[] = "ESPP1Meter"; // hostname for your node
+const char host[] = "emoncms.yourhost.com"; // server hostname
+const char node[] = "P1"; // identifier in EmonCMS
+const char apikey[] = "1234567890ABCDEF1234567890ABCDEF";  // your secret API key from EmonCMS
+const char otaPassword[] = "otapassword";    // password for your sketch uploads
+// verify SSL connection to server by checking the fingerprint
+const char fingerprint[] PROGMEM = "BE EF BE EF BE EF BE EF BE EF BE EF BE EF BE EF BE EF BE EF";
+
