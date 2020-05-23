@@ -4,7 +4,8 @@ Arduino Sketch om data uit de P1-poort van de digitale electiciteitsmeter te upl
 ## Gebruikte hardware: 
 * [Wemos D1 mini V2 ESP8266](wemos_d1miniV2.jpg)
 * RJ12 plug, BS170 mosfet
-* 5V rails power supply
+* [5V DIN rail power supply](https://nl.farnell.com/mean-well/hdr-15-5/power-supply-ac-dc-5v-2-4a/dp/2815635)
+* [DIN rail enclosure](https://nl.farnell.com/camdenboss/cmeb/enclosure-din-grey-extendable/dp/1774480)
 
 Aan de P1-uitgang stroommeter hangt een Wemos D1 mini V2. Deze is ingebouwd in een module in de meterkast. Deze ESP8266 geeft via Wifi de metingen door naar EmonCMS. 
 
